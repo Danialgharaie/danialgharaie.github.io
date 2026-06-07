@@ -1,0 +1,135 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> A Battle Against Brute Forcing Information Asymmetry | Danial Gharaie Amirabadi </title> <meta name="author" content="Danial Gharaie Amirabadi"> <meta name="description" content="Research notebook "> <meta name="keywords" content="bioinformatics, computational-drug-discovery, docking, molecular-docking, machine-learning, research-notebook"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 930px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="canonical" href="https://danialgharaie.github.io/notebook/2026/a-battle-against-brute-forcing-information-asymmetry/"> <script src="/assets/js/theme.js?v=7af685e2ba20b37fef545c97b8064050"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Danial Gharaie Amirabadi </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">About </a> </li> <li class="nav-item active"> <a class="nav-link" href="/">About <span class="sr-only">(current)</span> </a> </li> <li class="nav-item active"> <a class="nav-link" href="/notebook/index.html">Notebook </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">Projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/github/">GitHub </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">A Battle Against Brute Forcing Information Asymmetry</h1> <p class="post-meta"> Created on June 07, 2026 </p> <p class="post-tags"> <i class="fa-solid fa-calendar fa-sm"></i> 2026   ·   <i class="fa-solid fa-hashtag fa-sm"></i> docking   <i class="fa-solid fa-hashtag fa-sm"></i> consensus-docking   <i class="fa-solid fa-hashtag fa-sm"></i> machine-learning   <i class="fa-solid fa-hashtag fa-sm"></i> drug-discovery   <i class="fa-solid fa-hashtag fa-sm"></i> uncertainty   ·   <i class="fa-solid fa-tag fa-sm"></i> notebook </p> </header> <article class="post-content"> <div id="markdown-content"> <p>Drug discovery is often portrayed as a problem of scale.</p> <p>Millions of molecules. Thousands of targets. Billions of possible interactions.</p> <p>The intuitive response has always been the same: increase computation. Screen more compounds. Run more simulations. Build larger clusters. Search harder.</p> <p>But over time I became convinced that scale is not the real enemy.</p> <p>The enemy is information asymmetry.</p> <p>When a docking engine evaluates a molecule, it does not observe reality. It observes a projection of reality through a particular scoring function, force field, search algorithm, and set of assumptions. Every engine sees a different world.</p> <p>One engine sees shape complementarity.</p> <p>Another sees electrostatics.</p> <p>A third emphasizes hydrogen bonding.</p> <p>Each produces rankings that appear authoritative, yet often disagree dramatically.</p> <p>Traditionally, disagreement is treated as failure.</p> <p>Consensus methods were developed to suppress disagreement, averaging predictions until a single answer emerges. Molecules that fail to satisfy the consensus are discarded. The assumption is simple: if experts disagree, confidence should decrease.</p> <p>Yet this assumption contains a hidden flaw.</p> <p>Disagreement is not always evidence of error.</p> <p>Sometimes disagreement is evidence of missing information.</p> <p>Imagine three explorers mapping a landscape from different mountains. If all three describe the same valley, confidence is justified. But if their maps differ dramatically, it does not necessarily mean one of them is wrong. It may mean that the terrain is more complex than any single viewpoint can capture.</p> <p>In computational drug discovery, these regions of disagreement may contain some of the most interesting molecules in the entire search space.</p> <p>Traditional screening pipelines eliminate them.</p> <p>The philosophy behind PLE-DR emerged from a simple question:</p> <p>What if disagreement itself is information?</p> <p>Instead of interpreting inter-engine disagreement as noise, I began to view it as uncertainty. And uncertainty is valuable. It marks regions where our models possess the least knowledge and where potentially important compounds may be hiding.</p> <p>The resulting framework was not designed to brute force the chemical universe more aggressively. It was designed to recover information that would otherwise be lost.</p> <p>Compounds rejected by one layer could be reactivated if disagreement suggested unresolved uncertainty. Information was allowed to persist across layers through score memory rather than being destroyed by early elimination. The objective shifted from filtering molecules to preserving evidence.</p> <p>In this sense, the project became less about docking and more about epistemology.</p> <p>How should a system behave when multiple imperfect observers disagree?</p> <p>Human beings face this problem constantly. Scientific progress itself is largely a process of navigating conflicting evidence. We rarely discover truth by silencing disagreement. More often, we discover truth by investigating it.</p> <p>The same principle may apply to virtual screening.</p> <p>The future of computational drug discovery may not belong solely to larger datasets, larger models, or larger compute budgets. It may belong to methods that better understand uncertainty and extract value from disagreement.</p> <p>Because the challenge was never merely searching chemical space.</p> <p>The challenge was learning how to see what our models could not.</p> <p>At its heart, this work is a small battle against brute forcing information asymmetry.</p> <p>A belief that when knowledge is incomplete, the answer is not always to compute harder.</p> <p>Sometimes the answer is to listen more carefully to the places where our tools disagree.</p> </div> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Danial Gharaie Amirabadi. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-about",
+    title: "About",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-about",
+          title: "About",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/";
+          },
+        },{id: "nav-notebook",
+          title: "Notebook",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/notebook/index.html";
+          },
+        },{id: "nav-projects",
+          title: "Projects",
+          description: "Research projects, thesis, and computational tools.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
+        },{id: "nav-cv",
+          title: "CV",
+          description: "Curriculum Vitae of Danial Gharaie Amirabadi.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/cv/";
+          },
+        },{id: "nav-github",
+          title: "GitHub",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/github/";
+          },
+        },{id: "post-a-battle-against-brute-forcing-information-asymmetry",
+        
+          title: "A Battle Against Brute Forcing Information Asymmetry",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/notebook/2026/a-battle-against-brute-forcing-information-asymmetry/";
+          
+        },
+      },{id: "projects-candidock-ple-dr",
+          title: 'Candidock / PLE-DR',
+          description: "A layered virtual screening and consensus docking framework to address scoring uncertainty.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/1_candidock_ple_dr/";
+            },},{id: "projects-fungal-hsp90-consensus-docking-thesis",
+          title: 'Fungal Hsp90 Consensus Docking Thesis',
+          description: "Evaluation of consensus docking protocols to target fungal Heat Shock Protein 90.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/2_fungal_hsp90_consensus_docking/";
+            },},{id: "projects-neurosnap-research-tools",
+          title: 'Neurosnap Research Tools',
+          description: "Development of computational biology and molecular modeling utilities.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/3_neurosnap_research_tools/";
+            },},{
+        id: 'social-cv',
+        title: 'CV',
+        section: 'Socials',
+        handler: () => {
+          window.open("/assets/pdf/example_pdf.pdf", "_blank");
+        },
+      },{
+        id: 'social-email',
+        title: 'email',
+        section: 'Socials',
+        handler: () => {
+          window.open("mailto:%64%61%6E%69%61%6C%67%68%61%72%61%69%65@%67%6D%61%69%6C.%63%6F%6D", "_blank");
+        },
+      },{
+        id: 'social-rss',
+        title: 'RSS Feed',
+        section: 'Socials',
+        handler: () => {
+          window.open("/feed.xml", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> </body> </html>
