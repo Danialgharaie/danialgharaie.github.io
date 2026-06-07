@@ -17,10 +17,12 @@ This repository contains the personal research notebook and academic website of 
 You can run the site locally using Docker/Podman to avoid installing Ruby dependencies directly.
 
 ### Prerequisites
+
 - Docker or Podman
 - Docker Compose or Podman Compose
 
 ### Build the Site Container
+
 ```bash
 podman compose build
 # or
@@ -28,11 +30,13 @@ docker-compose build
 ```
 
 ### Run the Development Server
+
 ```bash
 podman compose up
 # or
 docker-compose up
 ```
+
 Once started, the site will be available locally at [http://localhost:8080](http://localhost:8080) with automatic hot-reloading.
 
 ---

@@ -11,8 +11,7 @@ contact_note: >
 description: >
   Research notebook
 footer_text: >
-  Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
-  Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
+  <style>footer { display: none !important; }</style>
 keywords: bioinformatics, computational-drug-discovery, docking, molecular-docking, machine-learning, research-notebook # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)

@@ -2,13 +2,12 @@ cv:
   name: Danial Gharaie Amirabadi
   label: PharmD Candidate · Computational Drug Discovery · Bioinformatics
   email: danialgharaie@gmail.com
-  location: Tehran, Iran
   summary: I use this site as a research notebook for molecular docking, virtual screening, fungal Hsp90, machine learning, and unfinished ideas.
 
   sections:
     Education:
-      - institution: Tehran University of Medical Sciences
-        area: Pharmacy (PharmD Candidate)
+      - institution: PharmD Candidate
+        area: Pharmacy
         studyType: PharmD
         start_date: 2020
         end_date: 2026

@@ -3,8 +3,6 @@ layout: about
 title: About
 permalink: /
 subtitle: PharmD Candidate · Computational Drug Discovery · Bioinformatics
-nav: true
-nav_order: 1
 
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
