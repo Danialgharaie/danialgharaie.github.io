@@ -1,0 +1,18 @@
+cv:
+  name: Danial Gharaie Amirabadi
+  label: PharmD Candidate · Computational Drug Discovery · Bioinformatics
+  email: 90807080+Danialgharaie@users.noreply.github.com
+  location: Tehran, Iran
+  summary: I use this site as a research notebook for molecular docking, virtual screening, fungal Hsp90, machine learning, and unfinished ideas.
+
+  sections:
+    Education:
+      - institution: Tehran University of Medical Sciences
+        area: Pharmacy (PharmD Candidate)
+        studyType: PharmD
+        start_date: 2020
+        end_date: 2026
+
+    Skills:
+      - name: Computational Drug Discovery
+        keywords: Molecular Docking, Virtual Screening, Fungal Hsp90, Machine Learning, Bioinformatics
