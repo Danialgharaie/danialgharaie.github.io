@@ -89,6 +89,102 @@ Two pipelines compete:
   $+\mathrm{std}$ term is the revisit rule from PLE-DR — a compound the engines _disagree_
   about is given the benefit of the doubt rather than thrown away.
 
+## The Math Behind the Toy Model
+
+The simulation starts by assigning each compound $i$ a latent binding quality
+
+$$
+q_i \sim \mathcal{N}(0, 1), \qquad i = 1,\ldots,N
+$$
+
+with $N = 6000$. The true hits are the $H = 120$ compounds with the largest hidden quality:
+
+$$
+\mathcal{H} = \operatorname{Top}_{120}(q_i).
+$$
+
+Each of the $K = 4$ docking engines observes that same hidden quality through noise:
+
+$$
+s_{ik} = q_i + \sigma e_{ik},
+$$
+
+where $\sigma = 1$ in the figures. To control whether the engines make independent mistakes
+or share the same bias, the error term is built from a shared component and a private
+component:
+
+$$
+e_{ik} = \sqrt{\rho}\,z_i + \sqrt{1-\rho}\,\eta_{ik},
+$$
+
+with
+
+$$
+z_i \sim \mathcal{N}(0, 1), \qquad \eta_{ik} \sim \mathcal{N}(0, 1).
+$$
+
+So $\rho = 0$ gives independent engine errors, while $\rho = 1$ makes every engine inherit
+the same error for a compound. Because the two noise terms are scaled by $\sqrt{\rho}$ and
+$\sqrt{1-\rho}$, the total error variance stays fixed while the cross-engine correlation
+changes.
+
+The memoryless cascade begins with all compounds, $S_0 = \{1,\ldots,N\}$, then keeps only a
+fixed fraction after each engine:
+
+$$
+S_t = \operatorname{Top}_{\lfloor f_t |S_{t-1}| \rfloor}
+\left(\{s_{ik_t}: i \in S_{t-1}\}\right),
+$$
+
+with
+
+$$
+(f_1, f_2, f_3) = (0.35, 0.30, 0.30).
+$$
+
+Anything outside $S_t$ is permanently discarded. The memory-enabled pipeline instead assigns
+every compound an aggregate score
+
+$$
+a_i = \bar{s}_i + \lambda \sigma_i^{(s)},
+$$
+
+where
+
+$$
+\bar{s}_i = \frac{1}{K}\sum_{k=1}^{K}s_{ik},
+$$
+
+and
+
+$$
+\sigma_i^{(s)} =
+\sqrt{\frac{1}{K}\sum_{k=1}^{K}(s_{ik} - \bar{s}_i)^2}.
+$$
+
+In the plotted experiment, $\lambda = 0.5$. The first term rewards high average predicted
+quality; the second rewards disagreement enough to keep uncertain compounds from vanishing
+too early.
+
+For any final shortlist size $L$, recall is
+
+$$
+\operatorname{Recall@}L =
+\frac{|\operatorname{Top}_{L}(\text{ranked list}) \cap \mathcal{H}|}{|\mathcal{H}|}.
+$$
+
+The memory value is the absolute recall gain from retaining score history:
+
+$$
+V_m(L,\rho) =
+\operatorname{Recall@}L_{\mathrm{memory}} -
+\operatorname{Recall@}L_{\mathrm{memoryless}}.
+$$
+
+For the correlation sweep, I fixed $L = 300$, evaluated $\rho \in \{0, 0.1,\ldots,1.0\}$,
+and averaged over 40 random replicates. The band in the figure is the 16th to 84th
+percentile range across those replicates.
+
 <div class="text-center mt-4 mb-4">
   <img src="{{ '/assets/img/memory-schematic.png' | relative_url }}" class="img-fluid rounded" style="max-width: 80%; min-width: 300px; height: auto;" alt="Two decision-system architectures">
 </div>
