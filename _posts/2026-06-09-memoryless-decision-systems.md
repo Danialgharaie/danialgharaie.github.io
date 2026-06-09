@@ -13,6 +13,9 @@ as bluntly as I can and see what falls out.
 
 <div class="text-center mt-4 mb-4">
   <img src="{{ '/assets/img/memory-matters.png' | relative_url }}" class="img-fluid rounded" style="max-width: 100%; height: auto;" alt="Memory Matters overview illustration">
+  <p class="text-muted mt-2" style="font-size: 0.85rem;">
+    <em>Note: This is not an xkcd comic, and is not affiliated with or created by xkcd. It is an illustration inspired by xkcd's visual style, created using ChatGPT.</em>
+  </p>
 </div>
 
 Start with the simplest possible distinction.
