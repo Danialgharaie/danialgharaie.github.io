@@ -5,7 +5,7 @@ permalink: /projects/
 description: Research projects, thesis, and computational tools.
 nav: true
 nav_order: 3
-display_categories: [Research, Thesis, Tools]
+display_categories: [Private, Research, Thesis, Tools]
 horizontal: false
 ---
 
