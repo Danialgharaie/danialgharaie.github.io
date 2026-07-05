@@ -6,6 +6,14 @@ category: notebook
 tags: decision-systems virtual-screening active-learning uncertainty cost-aware-acquisition robustness
 ---
 
+**TL;DR:** Away from the crossing price, a wrong belief about the error correlation $\rho$ is
+mostly harmless — except for one corner. Confidently assuming errors are independent ($\hat\rho=0$)
+when they are not costs up to **33 points of recall**; the reverse mistake ($\hat\rho=1$ when
+$\rho=0$) costs at most 6. Any hedge toward believing bias might exist — even $\hat\rho=0.1$ —
+erases almost all of the risk. The mechanism: a cheap instrument's bias floor can coincide with
+total ignorance, a precise instrument's cannot, so over-trusting the noisy one is unbounded and
+over-trusting the sharp one is not.
+
 The last note ended with a confession pointed straight at itself: the price-aware split "prices
 precision correctly only because I told it the prices." $\sigma_c$, $\sigma_e$, and $\rho$ were
 all handed to the optimizer as known constants. In the wild you do not know how correlated your
@@ -33,12 +41,13 @@ strong, decisive skew — where being wrong doesn't just cost you a few percenta
 margin, it puts you on the wrong side of the argument entirely.
 
 There was a second, smaller thing to fix alongside this: at the original per-compound budget
-($8$ units, enough for at most one precise read), the split never had genuine room to mix cheap
-and precise reads at all — a single read's variance does not depend on $\rho$ (there is nothing
-to average, so nothing for $\rho$ to discount), so the allocation was a hard corner for almost
-every belief. I raised the per-compound budget fourfold (enough for up to four precise reads)
-so the split has real interior room to trade off; everything else — $N$, $H$, $M$, $L$,
-$\sigma_c$, $\sigma_e$ — is unchanged from the last note.
+($8$ units against a precise-read price of $r=32$), the whole budget could buy at most a
+quarter of a precise read's worth of averaging ($8/32=0.25$) — too thin a margin to be worth
+diverting from cheap reads except when $\hat\rho$ was already large, so the optimizer's choice
+collapsed to a hard corner (all-cheap or the full sliver of precise) for almost every belief.
+I raised the per-compound budget fourfold, to $32$ units — exactly one precise read's worth —
+so the split has real interior room to trade a fraction of a precise read against cheap reads;
+everything else — $N$, $H$, $M$, $L$, $\sigma_c$, $\sigma_e$ — is unchanged from the last note.
 
 ## The Setup
 
@@ -133,7 +142,7 @@ the first. Folding that back in — a split that is wrong about $\rho$ both when
 buy and when deciding how to weigh what it bought — is the natural next version of this
 experiment, alongside the misspecified-$\sigma$ question set aside two notes ago. The specific
 crossover numbers here (one bad column, a sixfold asymmetry, a budget large enough to afford
-four precise reads) are properties of this simulation at this price and this budget, not
+exactly one precise read's worth) are properties of this simulation at this price and this budget, not
 constants to carry elsewhere. What I would carry elsewhere is the shape: look for the cost of a
 wrong prior away from your model's indifference points, and expect the worst single belief to
 be the confident absence of the risk you are actually exposed to, not just any wrong number.
