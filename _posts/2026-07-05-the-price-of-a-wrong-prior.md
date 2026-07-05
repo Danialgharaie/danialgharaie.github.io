@@ -78,7 +78,8 @@ near-zero. Then there is one column that is not: $\hat\rho = 0$. Believing with 
 your instruments' errors are independent, when they are not, costs recall that climbs steadily
 with how wrong you are — from nothing at $\rho=0$ to roughly **33 points of recall** at
 $\rho=1$, a paired, statistically solid loss ($16$–$84$ band $[-0.38, -0.26]$, nowhere near
-zero). Move $\hat\rho$ to even $0.1$ — a small, hedging admission that maybe there's some
+zero). In absolute terms that is the oracle split's $0.69$ recall at $\rho=1$ falling to about
+$0.36$. Move $\hat\rho$ to even $0.1$ — a small, hedging admission that maybe there's some
 bias — and the loss at every true $\rho$ collapses to within about a percentage point of the
 oracle split. The catastrophe is not being _somewhat_ wrong about $\rho$. It is being _certain_
 there is no bias when there is.
@@ -97,9 +98,10 @@ independent errors wastes some of the budget on reads that would have paid off m
 elsewhere — costly, but bounded, because a precise read is still informative on its own.
 Confidently over-buying cheap reads when the truth is systematic bias can waste the _entire_
 budget on reads that add nothing at all. Checking the reverse corner in the same heatmap
-confirms this directly: wrongly assuming $\hat\rho=1$ when the truth is $\rho=0$ costs at most
-about $6$ points of recall, roughly a sixth of the damage from the opposite mistake. If you have
-to be confidently wrong about $\rho$, err toward believing in the bias.
+confirms this directly — the bottom-right corner, $\hat\rho=1$ against $\rho=0$: wrongly
+assuming $\hat\rho=1$ when the truth is $\rho=0$ costs at most about $6$ points of recall,
+roughly a sixth of the damage from the opposite mistake. If you have to be confidently wrong
+about $\rho$, err toward believing in the bias.
 
 ## The Line Plot Makes the Asymmetry Legible
 
