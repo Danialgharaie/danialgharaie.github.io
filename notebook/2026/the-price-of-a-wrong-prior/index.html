@@ -1,0 +1,198 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> The Price of a Wrong Prior | Danial Gharaie Amirabadi </title> <meta name="author" content="Danial Gharaie Amirabadi"> <meta name="description" content="Research notebook "> <meta name="keywords" content="bioinformatics, computational-drug-discovery, docking, molecular-docking, machine-learning, research-notebook"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 930px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="/assets/img/favicon.svg?v=ef477d76fcc3521aec68f15f51fda4bf"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="canonical" href="https://danialgharaie.github.io/notebook/2026/the-price-of-a-wrong-prior/"> <script src="/assets/js/theme.js?v=7af685e2ba20b37fef545c97b8064050"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Danial Gharaie Amirabadi </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">About </a> </li> <li class="nav-item active"> <a class="nav-link" href="/notebook/index.html">Notebook </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">Projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/github/">GitHub </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">The Price of a Wrong Prior</h1> <p class="post-meta"> Created on July 05, 2026 </p> <p class="post-tags"> <i class="fa-solid fa-calendar fa-sm"></i> 2026   ·   <i class="fa-solid fa-hashtag fa-sm"></i> decision-systems   <i class="fa-solid fa-hashtag fa-sm"></i> virtual-screening   <i class="fa-solid fa-hashtag fa-sm"></i> active-learning   <i class="fa-solid fa-hashtag fa-sm"></i> uncertainty   <i class="fa-solid fa-hashtag fa-sm"></i> cost-aware-acquisition   <i class="fa-solid fa-hashtag fa-sm"></i> robustness   ·   <i class="fa-solid fa-tag fa-sm"></i> notebook </p> </header> <article class="post-content"> <div id="markdown-content"> <p><strong>TL;DR:</strong> Away from the crossing price, a wrong belief about the error correlation $\rho$ is mostly harmless — except for one corner. Confidently assuming errors are independent ($\hat\rho=0$) when they are not costs up to <strong>33 points of recall</strong>; the reverse mistake ($\hat\rho=1$ when $\rho=0$) costs at most 6. Any hedge toward believing bias might exist — even $\hat\rho=0.1$ — erases almost all of the risk. The mechanism: a cheap instrument’s bias floor can coincide with total ignorance, a precise instrument’s cannot, so over-trusting the noisy one is unbounded and over-trusting the sharp one is not.</p> <p>The last note ended with a confession pointed straight at itself: the price-aware split “prices precision correctly only because I told it the prices.” $\sigma_c$, $\sigma_e$, and $\rho$ were all handed to the optimizer as known constants. In the wild you do not know how correlated your instrument’s errors are — you assume a value, $\hat\rho$, and hope it is close enough. This note asks the obvious next question: what does a wrong $\hat\rho$ cost you?</p> <h2 id="the-first-design-was-a-dead-end">The First Design Was a Dead End</h2> <p>The natural place to test this felt like the crossing itself — $r \approx 8$, the exact price where all-cheap and all-precise tied in the last note. I built the experiment there first: sweep an assumed $\hat\rho$ against a true $\rho$, watch the price-aware split’s allocation degrade.</p> <p>It didn’t degrade. The heatmap came back almost perfectly flat, and worse, at the one point that looked like it mattered — $\hat\rho \to 1$ — the “effect” turned out to be a tie-breaking artifact in my own optimizer, not a real prediction. That was worth catching before writing anything about it, and it is worth explaining why it happened, because the reason is the actual finding of this section.</p> <p>The crossing $r^*$ is, by definition, the price at which two very different strategies perform identically. That is a point of <em>maximum indifference to your allocation</em> — almost anything you buy there works about as well as anything else, so a wrong belief about $\rho$ has nothing costly to be wrong about. Testing misspecification at the point of maximum indifference was exactly backwards. The place a wrong prior can hurt you is where the <em>correct</em> allocation is a strong, decisive skew — where being wrong doesn’t just cost you a few percentage points at the margin, it puts you on the wrong side of the argument entirely.</p> <p>There was a second, smaller thing to fix alongside this: at the original per-compound budget ($8$ units against a precise-read price of $r=32$), the whole budget could buy at most a quarter of a precise read’s worth of averaging ($8/32=0.25$) — too thin a margin to be worth diverting from cheap reads except when $\hat\rho$ was already large, so the optimizer’s choice collapsed to a hard corner (all-cheap or the full sliver of precise) for almost every belief. I raised the per-compound budget fourfold, to $32$ units — exactly one precise read’s worth — so the split has real interior room to trade a fraction of a precise read against cheap reads; everything else — $N$, $H$, $M$, $L$, $\sigma_c$, $\sigma_e$ — is unchanged from the last note.</p> <h2 id="the-setup">The Setup</h2> <p>Same machinery as “The Price of Precision,” with two changes: a larger per-compound budget, and a fixed cost ratio moved off the crossing. Four thousand compounds, hidden qualities $q_i \sim \mathcal{N}(0,1)$, the genuine hits the top $H=80$. A free cheap screen scores all of them; the top $M=500$ form a shortlist. A budget of $B=16{,}000$ (32 units per shortlisted compound) is spent there. Cheap reads cost $1$ and have $\sigma_c=1.0$; precise reads cost $r=32$ and have $\sigma_e=0.35$ — the same instruments as before, at a price well past the crossing, where all-cheap should clearly beat all-precise if $\rho$ is small.</p> <p>The allocation problem is unchanged in spirit: for an assumed $\hat\rho$, choose how many extra cheap reads and how many precise reads to buy with the per-compound budget, maximising assumed posterior precision. What’s new is that this choice is now made with $\hat\rho$, while the <em>data</em> is generated with a possibly different true $\rho$, and downstream interpretation of whatever reads get bought uses the true $\rho$ — the mistake under test is mispricing precision, not also misreading your own instruments afterwards. (See “What This Is Not” for why that split is the honest scope here.) Eighty replicates; bands are 16th–84th percentile.</p> <h2 id="the-heatmap-has-one-bad-column">The Heatmap Has One Bad Column</h2> <div class="text-center mt-4 mb-4"> <img src="/assets/img/rho-crossing-heatmap.png" class="img-fluid rounded" style="max-width: 80%; min-width: 300px; height: auto;" alt="Heatmap of recall loss from a misspecified rho, across assumed and true rho"> </div> <p>Sweep $\hat\rho$ against $\rho$ at $r=32$ and almost the entire grid is a pale, unremarkable near-zero. Then there is one column that is not: $\hat\rho = 0$. Believing with certainty that your instruments’ errors are independent, when they are not, costs recall that climbs steadily with how wrong you are — from nothing at $\rho=0$ to roughly <strong>33 points of recall</strong> at $\rho=1$, a paired, statistically solid loss ($16$–$84$ band $[-0.38, -0.26]$, nowhere near zero). In absolute terms that is the oracle split’s $0.69$ recall at $\rho=1$ falling to about $0.36$. Move $\hat\rho$ to even $0.1$ — a small, hedging admission that maybe there’s some bias — and the loss at every true $\rho$ collapses to within about a percentage point of the oracle split. The catastrophe is not being <em>somewhat</em> wrong about $\rho$. It is being <em>certain</em> there is no bias when there is.</p> <h2 id="why-one-corner-is-so-much-worse-than-the-other">Why One Corner Is So Much Worse Than the Other</h2> <p>The mechanism is the same one this whole sequence keeps returning to, sharpened into an asymmetry. A cheap read’s variance floors at $\sigma_c^2\rho$; a precise read’s floors at $\sigma_e^2\rho$. At $\rho=1$, $\sigma_c^2\rho = 1.0$ — which is exactly the variance of the <em>prior</em> itself. Every one of the extra cheap reads the $\hat\rho=0$ split buys, once $\rho$ is actually $1$, adds precisely zero information beyond the one free screen you already had: you can spend the whole budget and learn nothing more than you knew before spending it. $\sigma_e^2\rho$ at $\rho=1$ is $0.1225$ — still a real improvement over the prior. So the two possible mistakes are not symmetric. Confidently over-buying precision when the truth is independent errors wastes some of the budget on reads that would have paid off more cheaply elsewhere — costly, but bounded, because a precise read is still informative on its own. Confidently over-buying cheap reads when the truth is systematic bias can waste the <em>entire</em> budget on reads that add nothing at all. Checking the reverse corner in the same heatmap confirms this directly — the bottom-right corner, $\hat\rho=1$ against $\rho=0$: wrongly assuming $\hat\rho=1$ when the truth is $\rho=0$ costs at most about $6$ points of recall, roughly a sixth of the damage from the opposite mistake. If you have to be confidently wrong about $\rho$, err toward believing in the bias.</p> <h2 id="the-line-plot-makes-the-asymmetry-legible">The Line Plot Makes the Asymmetry Legible</h2> <div class="text-center mt-4 mb-4"> <img src="/assets/img/rho-crossing-lines.png" class="img-fluid rounded" style="max-width: 95%; min-width: 300px; height: auto;" alt="Recall versus assumed rho at several true-rho slices, with oracle and pure-strategy reference lines"> </div> <p>At every true-$\rho$ slice, the misspecified split’s recall is flat and sitting right on the oracle line across almost the whole range of $\hat\rho$, then drops sharply in the last stretch before $\hat\rho=0$. It never falls <em>below</em> both pure baselines — even the worst misspecified point in this experiment stays at or above the weaker of all-cheap and all-precise, so a confidently wrong split is bad, but it does not lose to simply refusing to think about $\rho$ at all here. That is worth stating plainly rather than assuming: “looks principled while it loses,” the worry from the last note, turns out to be bounded by “at least as good as picking a pure strategy at random,” in this setup. Whether that bound holds elsewhere is exactly the kind of claim that needs checking before it gets trusted, not assumed from one figure.</p> <h2 id="where-this-lands">Where This Lands</h2> <ol> <li> <strong>Test misspecification away from the crossing, not at it.</strong> The crossing is a point of maximum indifference to allocation by construction; it is the worst place to look for the cost of a wrong belief. I built the experiment there first and got a flat, uninformative result — worth catching before shipping it as “robustness.”</li> <li> <strong>The damage is concentrated in one belief, not spread across all wrong beliefs.</strong> Any admission that bias might exist — even $\hat\rho=0.1$ — is enough to hedge away nearly all the risk. The catastrophic case is specifically the confident belief that there is none.</li> <li> <strong>The two mistakes are not symmetric, and the reason is the same floor argument from the last note.</strong> A cheap instrument’s bias floor can coincide with total ignorance (the prior itself); a sharp instrument’s floor cannot. Over-trusting the sharp instrument is a bounded mistake; over-trusting the noisy one, believing it to be unbiased when it is not, is not.</li> </ol> <h2 id="what-this-is-not">What This Is Not</h2> <p>Still a toy, and this time with a design choice narrowed on purpose. The allocation may be mispriced by $\hat\rho \ne \rho$, but the <em>interpretation</em> of whatever reads get bought uses the true $\rho$ throughout — I am isolating the cost of pricing precision wrong, not compounding it with also misreading your own instruments afterwards. That is a real simplification: in practice you would not know the true $\rho$ for the second step either if you didn’t know it for the first. Folding that back in — a split that is wrong about $\rho$ both when deciding what to buy and when deciding how to weigh what it bought — is the natural next version of this experiment, alongside the misspecified-$\sigma$ question set aside two notes ago. The specific crossover numbers here (one bad column, a sixfold asymmetry, a budget large enough to afford exactly one precise read’s worth) are properties of this simulation at this price and this budget, not constants to carry elsewhere. What I would carry elsewhere is the shape: look for the cost of a wrong prior away from your model’s indifference points, and expect the worst single belief to be the confident absence of the risk you are actually exposed to, not just any wrong number.</p> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/notebook/2026/the-price-of-precision/">The Price of Precision</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/notebook/2026/pricing-uncertainty-under-a-budget/">Pricing Uncertainty Under a Budget</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/notebook/2026/memoryless-decision-systems/">Memoryless and Memory-Enabled Decision Systems</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/notebook/2026/economics-of-insight/">The Economics of Insight</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/notebook/2026/a-battle-against-brute-forcing-information-asymmetry/">A Battle Against Brute Forcing Information Asymmetry</a> </li> </ul> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Danial Gharaie Amirabadi. <style>footer { display: none !important; }</style> </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-about",
+    title: "About",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-notebook",
+          title: "Notebook",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/notebook/index.html";
+          },
+        },{id: "nav-projects",
+          title: "Projects",
+          description: "Research projects, thesis, and computational tools.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
+        },{id: "nav-publications",
+          title: "publications",
+          description: "publications by categories in reversed chronological order. generated by jekyll-scholar.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-github",
+          title: "GitHub",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/github/";
+          },
+        },{id: "post-the-price-of-a-wrong-prior",
+        
+          title: "The Price of a Wrong Prior",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/notebook/2026/the-price-of-a-wrong-prior/";
+          
+        },
+      },{id: "post-the-price-of-precision",
+        
+          title: "The Price of Precision",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/notebook/2026/the-price-of-precision/";
+          
+        },
+      },{id: "post-pricing-uncertainty-under-a-budget",
+        
+          title: "Pricing Uncertainty Under a Budget",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/notebook/2026/pricing-uncertainty-under-a-budget/";
+          
+        },
+      },{id: "post-memoryless-and-memory-enabled-decision-systems",
+        
+          title: "Memoryless and Memory-Enabled Decision Systems",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/notebook/2026/memoryless-decision-systems/";
+          
+        },
+      },{id: "post-the-economics-of-insight",
+        
+          title: "The Economics of Insight",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/notebook/2026/economics-of-insight/";
+          
+        },
+      },{id: "post-a-battle-against-brute-forcing-information-asymmetry",
+        
+          title: "A Battle Against Brute Forcing Information Asymmetry",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/notebook/2026/a-battle-against-brute-forcing-information-asymmetry/";
+          
+        },
+      },{id: "projects-candidock",
+          title: 'Candidock',
+          description: "A private-stage molecular docking and virtual screening project focused on consensus scoring, uncertainty, and candidate prioritization.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/1_candidock/";
+            },},{id: "projects-structscope",
+          title: 'structscope',
+          description: "Rust-native structural bioinformatics toolkit for parsing protein structures, graph-native representations, feature extraction, and analytical outputs.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/2_structscope/";
+            },},{id: "projects-mutant-landscape",
+          title: 'Mutant Landscape',
+          description: "A protein language model workflow for exploring mutation landscapes in protein sequences.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/3_mutant_landscape/";
+            },},{id: "projects-kluster",
+          title: 'Kluster',
+          description: "Structural clustering implementation for AlphaFold-predicted protein-family analysis.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/4_kluster/";
+            },},{id: "projects-dssp-pre",
+          title: 'DSSP-Pre',
+          description: "A small C utility for preparing predicted protein structures for DSSP compatibility.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/5_dssp_pre/";
+            },},{id: "projects-prot2prop",
+          title: 'Prot2Prop',
+          description: "Structure-aware fine-tuning of protein language models for joint prediction of multiple developability properties from protein structure inputs.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/6_prot2prop/";
+            },},{
+        id: 'social-cv',
+        title: 'CV',
+        section: 'Socials',
+        handler: () => {
+          window.open("/assets/pdf/example_pdf.pdf", "_blank");
+        },
+      },{
+        id: 'social-email',
+        title: 'email',
+        section: 'Socials',
+        handler: () => {
+          window.open("mailto:%64%61%6E%69%61%6C%67%68%61%72%61%69%65@%67%6D%61%69%6C.%63%6F%6D", "_blank");
+        },
+      },{
+        id: 'social-rss',
+        title: 'RSS Feed',
+        section: 'Socials',
+        handler: () => {
+          window.open("/feed.xml", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> </body> </html>
