@@ -36,10 +36,9 @@ The answer is not merely that two mistakes are worse than one. The interesting c
 The machinery is unchanged from ["The Price of a Wrong Prior"]({{ '/notebook/2026/the-price-of-a-wrong-prior/' | relative_url }}).
 There are $N=4000$ compounds with hidden qualities
 
-<!-- prettier-ignore -->
-\[
+$$
 q_i \sim \mathcal{N}(0,1),
-\]
+$$
 
 and the top $H=80$ are the genuine hits. One free cheap measurement screens the full population;
 the top $M=500$ enter a shortlist. A budget of $B=16{,}000$, or 32 units per shortlisted compound,
@@ -49,31 +48,28 @@ posterior means are selected and recall of the true 80 is measured.
 
 Repeated measurements from instrument $j$ contain a shared component and a fresh component:
 
-<!-- prettier-ignore -->
-\[
+$$
 y_{ijk}=q_i+\sqrt{\rho}\,\sigma_j z_{ij}
 +\sqrt{1-\rho}\,\sigma_j\eta_{ijk}.
-\]
+$$
 
 Averaging $K$ reads therefore gives an effective error variance
 
-<!-- prettier-ignore -->
-\[
+$$
 v_j(K;\rho)=\sigma_j^2\left(\rho+\frac{1-\rho}{K}\right).
-\]
+$$
 
 The private term shrinks with $K$; the shared term does not. The allocator uses $\hat\rho$ to
 choose the cheap/precise split that maximises assumed posterior precision. The inference model
 then turns the purchased means into
 
-<!-- prettier-ignore -->
-\[
+$$
 \hat\mu_i=
 \frac{\hat\tau_c\bar y_{ci}+\hat\tau_e\bar y_{ei}}
 {1+\hat\tau_c+\hat\tau_e},
 \qquad
 \hat\tau_j=\frac{1}{v_j(K_j;\hat\rho)}.
-\]
+$$
 
 The new part is a four-way decomposition, all evaluated on paired random draws:
 
@@ -130,11 +126,10 @@ $[-0.263,-0.163]$.
 
 I measured that non-additivity directly as
 
-<!-- prettier-ignore -->
-\[
+$$
 I=(R_{11}-R_{00})-(R_{10}-R_{00})-(R_{01}-R_{00})
  =R_{11}-R_{10}-R_{01}+R_{00},
-\]
+$$
 
 where $R_{00}$ is the oracle, $R_{10}$ has only the allocation wrong, $R_{01}$ has only inference
 wrong, and $R_{11}$ has both wrong. Here $I=-0.212$: the entire loss is an interaction that neither
@@ -193,18 +188,16 @@ overvalue.
 Internal consistency also makes the system more confident than its accuracy allows. Under the
 assumed model, the claimed posterior variance is
 
-<!-- prettier-ignore -->
-\[
+$$
 \hat V=\frac{1}{1+\hat\tau_c+\hat\tau_e}.
-\]
+$$
 
 Because the weights were computed from the wrong variances, the actual mean-squared error is
 
-<!-- prettier-ignore -->
-\[
+$$
 \operatorname{MSE}(\hat\mu)=
 (w_c+w_e-1)^2+w_c^2v_c+w_e^2v_e,
-\]
+$$
 
 with $v_c$ and $v_e$ evaluated under the true $\rho$.
 
